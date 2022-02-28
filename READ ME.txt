@@ -1,0 +1,16 @@
+READ ME
+
+cALULATE WEEK AND SUNDAY TIMES OVER 2 WEEK ROSTER.
+EMPLOYEES CAN BE BE MOVED AROUND ON LIST.
+
+Excel sheet must be outside of Times Calulator Folder.
+Excel Workbook must be named Attendant_Carwash_Roster and CASHIERS_ROSTER
+
+Example Folder Structure:
+
+In x folder:
+
+	Times Calculator (folder)
+	Attendant_Carwash_Roster.xls
+	CASHIERS_ROSTER.xls	
+	
