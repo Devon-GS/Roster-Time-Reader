@@ -249,7 +249,7 @@ def refresh():
 
 # Test if files are in location
 try:
-    file = path.exists('../CASHIERS_ROSTER.xls')
+    file = path.exists('../CASHIERS_ROSTER.xlsx')
     if file == False:
         raise FileNotFoundError
 except FileNotFoundError:
@@ -257,17 +257,17 @@ except FileNotFoundError:
     error_label.grid(row=1, column=0, sticky=N+E+S+W, pady=(2, 0), padx=(5, 0))
 else:
     try:
-        file = path.exists('../Attendant_Carwash_Roster.xls')
+        file = path.exists('../Attendant_Carwash_Roster.xlsx')
         if file == False:
             raise FileNotFoundError
     except FileNotFoundError:
         error_label = Label(root, text='File Attebdant_Carwash_Roster.xls not found')
         error_label.grid(row=1, column=0, sticky=N+E+S+W, pady=(2, 0), padx=(5, 0))
     else:
-        file_a = '../Attendant_Carwash_Roster.xls'
+        file_a = '../Attendant_Carwash_Roster.xlsx'
         file_sheets_a = pd.ExcelFile(file_a).sheet_names
         
-        file_c = '../CASHIERS_ROSTER.xls'
+        file_c = '../CASHIERS_ROSTER.xlsx'
         file_sheets_c = pd.ExcelFile(file_c).sheet_names
 
         db_dir = path.exists('database')

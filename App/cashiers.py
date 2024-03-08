@@ -9,7 +9,7 @@ def cashier_one(selected):
     cashier_week_one_list = []
 
     # Get file
-    file = '../CASHIERS_ROSTER.xls'
+    file = '../CASHIERS_ROSTER.xlsx'
     file_sheets = pd.ExcelFile(file).sheet_names
     # Get Columns
     columns = ['idx', 'CASHIERS', 'THU', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
@@ -140,7 +140,7 @@ def cashier_two(selected):
     cashier_week_two_list = []
 
     # Get file
-    file = '../CASHIERS_ROSTER.xls'
+    file = '../CASHIERS_ROSTER.xlsx'
     file_sheets = pd.ExcelFile(file).sheet_names
     # Get Columns
     columns = ['idx', 'CASHIERS', 'THU', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']

@@ -5,7 +5,7 @@ def bakery_one(selected):
     bakery_week_one_list = []
     
     # Read in excel file
-    file = '../CASHIERS_ROSTER.xls'
+    file = '../CASHIERS_ROSTER.xlsx'
     file_sheets = pd.ExcelFile(file).sheet_names
     # Get Columns
     columns = ['idx', 'CASHIERS', 'THU', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
@@ -39,7 +39,7 @@ def bakery_one(selected):
         tue = week[6]
         wed = week[7]
 
-        if thur == 'AF':
+        if thur == 'AF' or thur.lower() == 'casher' or thur.lower() == 'cashier':
             thur = 0
         elif first(thur) == 6.3:
             thur = second(thur) - 6.5    
@@ -52,7 +52,7 @@ def bakery_one(selected):
         else:
             thur = first(thur) - second(thur)
 
-        if fri == 'AF':
+        if fri == 'AF' or fri.lower() == 'casher' or fri.lower() == 'cashier':
             fri = 0
         elif first(fri) == 6.3:
             fri = second(fri) - 6.5  
@@ -65,11 +65,10 @@ def bakery_one(selected):
         else:
             fri = first(fri) - second(fri)
 
-        if sat == 'AF':
+        if sat == 'AF' or sat.lower() == 'casher' or sat.lower() == 'cashier':
             sat = 0
         elif first(sat) == 6.3:
             sat = second(sat) - 6.5
-            
         elif second(sat) == 6.3:
             sat = (24 - first(sat)) + 6.5
         elif first(sat) >= 18:
@@ -79,7 +78,7 @@ def bakery_one(selected):
         else:
             sat = first(sat) - second(sat)
 
-        if sun == 'AF':
+        if sun == 'AF' or sun.lower() == 'casher' or sun.lower() == 'cashier':
             sun = 0
         elif first(sun) == 6.3:
             sun = second(sun) - 6.5  
@@ -92,7 +91,7 @@ def bakery_one(selected):
         else:
             sun = first(sun) - second(sun)
 
-        if mon == 'AF':
+        if mon == 'AF' or mon.lower() == 'casher' or mon.lower() == 'cashier':
             mon = 0
         elif first(mon) == 6.3:
             mon = second(mon) - 6.5  
@@ -105,7 +104,7 @@ def bakery_one(selected):
         else:
             mon = first(mon) - second(mon)
 
-        if tue == 'AF':
+        if tue == 'AF' or tue.lower() == 'casher' or tue.lower() == 'cashier':
             tue = 0
         elif first(tue) == 6.3:
             tue = second(tue) - 6.5  
@@ -118,7 +117,7 @@ def bakery_one(selected):
         else:
             tue = first(tue) - second(tue)
 
-        if wed == 'AF':
+        if wed == 'AF' or wed.lower() == 'casher' or wed.lower() == 'cashier':
             wed = 0
         elif first(wed) == 6.3:
             wed = second(wed) - 6.5  
@@ -138,7 +137,7 @@ def bakery_one(selected):
 def bakery_two(selected):
     bakery_week_two_list = []
 
-    file = '../CASHIERS_ROSTER.xls'
+    file = '../CASHIERS_ROSTER.xlsx'
     file_sheets = pd.ExcelFile(file).sheet_names
     # Get Columns
     columns = ['idx', 'CASHIERS', 'THU', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
@@ -172,7 +171,7 @@ def bakery_two(selected):
         tue = week[6]
         wed = week[7]
 
-        if thur == 'AF':
+        if thur == 'AF' or thur.lower() == 'casher' or thur.lower() == 'cashier':
             thur = 0
         elif first(thur) == 6.3:
             thur = second(thur) - 6.5    
@@ -185,7 +184,7 @@ def bakery_two(selected):
         else:
             thur = first(thur) - second(thur)
 
-        if fri == 'AF':
+        if fri == 'AF' or fri.lower() == 'casher' or fri.lower() == 'cashier':
             fri = 0
         elif first(fri) == 6.3:
             fri = second(fri) - 6.5  
@@ -198,7 +197,7 @@ def bakery_two(selected):
         else:
             fri = first(fri) - second(fri)
 
-        if sat == 'AF':
+        if sat == 'AF' or sat.lower() == 'casher' or sat.lower() == 'cashier':
             sat = 0
         elif first(sat) == 6.3:
             sat = second(sat) - 6.5  
@@ -211,7 +210,7 @@ def bakery_two(selected):
         else:
             sat = first(sat) - second(sat)
 
-        if sun == 'AF':
+        if sun == 'AF' or sun.lower() == 'casher' or sun.lower() == 'cashier':
             sun = 0
         elif first(sun) == 6.3:
             sun = second(sun) - 6.5  
@@ -224,7 +223,7 @@ def bakery_two(selected):
         else:
             sun = first(sun) - second(sun)
 
-        if mon == 'AF':
+        if mon == 'AF' or mon.lower() == 'casher' or mon.lower() == 'cashier':
             mon = 0
         elif first(mon) == 6.3:
             mon = second(mon) - 6.5  
@@ -237,7 +236,7 @@ def bakery_two(selected):
         else:
             mon = first(mon) - second(mon)
 
-        if tue == 'AF':
+        if tue == 'AF' or tue.lower() == 'casher' or tue.lower() == 'cashier':
             tue = 0
         elif first(tue) == 6.3:
             tue = second(tue) - 6.5  
@@ -250,7 +249,7 @@ def bakery_two(selected):
         else:
             tue = first(tue) - second(tue)
 
-        if wed == 'AF':
+        if wed == 'AF' or wed.lower() == 'casher' or wed.lower() == 'cashier':
             wed = 0
         elif first(wed) == 6.3:
             wed = second(wed) - 6.5  

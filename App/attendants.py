@@ -9,7 +9,7 @@ def attendant_one(selected):
     week_one_list = []
 
     # Read file and get sheets
-    file = '../Attendant_Carwash_Roster.xls'
+    file = '../Attendant_Carwash_Roster.xlsx'
     file_sheets = pd.ExcelFile(file).sheet_names
     # Get Columns
     columns = ['idx','ATTENDANTS', 'THURS', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
@@ -138,7 +138,7 @@ def attendant_two(selected):
     week_two_list = []
 
     # Read file and get sheets
-    file = '../Attendant_Carwash_Roster.xls'
+    file = '../Attendant_Carwash_Roster.xlsx'
     file_sheets = pd.ExcelFile(file).sheet_names
     # Get Columns
     columns = ['idx','ATTENDANTS', 'THURS', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
