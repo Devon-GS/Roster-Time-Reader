@@ -1,0 +1,23 @@
+[project]
+name = "roster-time-reader"
+version = "0.1.0"
+description = "Works out hours worked over fortnight"
+authors = [
+    {name = "Devon",email = "ds.pydev@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pillow (>=12.0.0,<13.0.0)",
+    "pandas (>=2.3.3,<3.0.0)",
+    "openpyxl (>=3.1.5,<4.0.0)"
+]
+
+[tool.poetry]
+package-mode = false
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
