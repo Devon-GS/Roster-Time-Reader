@@ -15,7 +15,6 @@ def build_excel(roster, week_data, week_dates, week):
 	# FUNCTIONS
 	# Find numbers before dash and after dash
 	def first(weekday):
-		# print(weekday)
 		first = float(re.findall('[0-9]+(?=.*\-)', weekday)[0])
 		return first
 
@@ -28,7 +27,6 @@ def build_excel(roster, week_data, week_dates, week):
 		wb = Workbook()
 		wb.active.title = "Attendants"
 		wb.create_sheet("Cashiers")
-		wb.create_sheet("Bakers")
 		wb.save('Total Time Worked.xlsx')
 
 	# ##############################################
@@ -37,7 +35,10 @@ def build_excel(roster, week_data, week_dates, week):
 
 	# Start workbook or continue
 	wb = load_workbook("Total Time Worked.xlsx")
-	ws = wb[roster]
+	if roster == 'Bakers':
+		ws = wb['Cashiers']
+	else:
+		ws = wb[roster]
 		
 	# Get dates of week 
 	if week == 1:
@@ -59,11 +60,19 @@ def build_excel(roster, week_data, week_dates, week):
 
 	# Headings
 	if week == 1:
-		hd_row = 1
-		shd_row = 2
+		if roster == 'Bakers':
+			hd_row = 8
+			shd_row = 9
+		else:
+			hd_row = 1
+			shd_row = 2
 	else:
-		hd_row = 16
-		shd_row = 17
+		if roster == 'Bakers':
+			hd_row = 23
+			shd_row = 24
+		else:
+			hd_row = 16
+			shd_row = 17
 
 	ws[f'A{hd_row}'] = 'Week 1'
 	ws[f'B{hd_row}'] = thursday
@@ -74,7 +83,7 @@ def build_excel(roster, week_data, week_dates, week):
 	ws[f'G{hd_row}'] = tuesday
 	ws[f'H{hd_row}'] = wednesday
 
-	ws[f'A{shd_row}'] = 'ATTENDENTS'
+	# ws[f'A{shd_row}'] = 'ATTENDENTS'
 	ws[f'B{shd_row}'] = 'THURS'
 	ws[f'C{shd_row}'] = 'FRI'
 	ws[f'D{shd_row}'] = 'SAT'
@@ -92,9 +101,15 @@ def build_excel(roster, week_data, week_dates, week):
 
 	# Row and column start
 	if week == 1:
-		row = 3
-	else: 
-		row = 18	
+		if roster == 'Bakers':
+			row = 10
+		else:
+			row = 3
+	else:
+		if roster == 'Bakers':
+			row = 25
+		else:
+			row = 18	
 
 	# Extract data to excel
 	i = 0
@@ -112,7 +127,10 @@ def build_excel(roster, week_data, week_dates, week):
 
 		ws[f'A{row + i}'] = name
 
-		if thur == 'AF':
+		if 'cas' in thur.lower():
+			th = 0
+			ws[f'B{row + i}'] = thur		
+		elif thur == 'AF':
 			th = 0
 			ws[f'B{row + i}'] = f'{thur} | ({int(th)})'
 		elif first(thur) >= 18:
@@ -125,7 +143,10 @@ def build_excel(roster, week_data, week_dates, week):
 			th = first(thur) - second(thur)
 			ws[f'B{row + i}'] = f'{thur} | ({int(th)})'
 		
-		if fri == 'AF':
+		if 'cas' in fri.lower():
+			fr = 0
+			ws[f'C{row + i}'] = fri
+		elif fri == 'AF':
 			fr = 0
 			ws[f'C{row + i}'] = f'{fri} | ({int(fr)})'
 		elif first(fri) >= 18:
@@ -140,7 +161,11 @@ def build_excel(roster, week_data, week_dates, week):
 
 		# Certain employees work some sunday hours that have a different pay structure var_n
 		global sun_wo
-		if sat == 'AF':
+		if 'cas' in sat.lower():
+			sa = 0
+			sun_wo = 0
+			ws[f'D{row + i}'] = sat
+		elif sat == 'AF':
 			sa = 0
 			sun_wo = 0
 			ws[f'D{row + i}'] = f'{sat} | ({int(sa)})'
@@ -154,7 +179,11 @@ def build_excel(roster, week_data, week_dates, week):
 			ws[f'D{row + i}'] = f'{sat} | ({int(sa)})'
 
 		global mon_wo
-		if sun == 'AF':
+		if 'cas' in sun.lower():
+			mon_wo = 0
+			su = 0
+			ws[f'E{row + i}'] = sun
+		elif sun == 'AF':
 			mon_wo = 0
 			su = 0
 			ws[f'E{row + i}'] = f'{sun} | ({int(su) + int(sun_wo)})'
@@ -167,7 +196,10 @@ def build_excel(roster, week_data, week_dates, week):
 			su = (first(sun) - second(sun)) * -1
 			ws[f'E{row + i}'] = f'{sun} | ({int(su) + int(sun_wo)})'
 
-		if mon == 'AF':
+		if 'cas' in mon.lower():
+			mo = 0
+			ws[f'F{row + i}'] = mon
+		elif mon == 'AF':
 			mo = 0
 			ws[f'F{row + i}'] = f'{mon} | ({int(mo) + int(mon_wo)})'
 		elif first(mon) >= 18:
@@ -177,7 +209,10 @@ def build_excel(roster, week_data, week_dates, week):
 			mo = (first(mon) - second(mon)) * -1
 			ws[f'F{row + i}'] = f'{mon} | ({int(mo) + int(mon_wo)})'
 		
-		if tue == 'AF':
+		if 'cas' in tue.lower():
+			tu = 0
+			ws[f'G{row + i}'] = tue
+		elif tue == 'AF':
 			tu = 0
 			ws[f'G{row + i}'] = f'{tue} | ({int(tu)})'
 		elif first(tue) >= 18:
@@ -187,7 +222,10 @@ def build_excel(roster, week_data, week_dates, week):
 			tu = (first(tue) - second(tue)) * -1
 			ws[f'G{row + i}'] = f'{tue} | ({int(tu)})'
 
-		if wed == 'AF':
+		if 'cas' in wed.lower():
+			we = 0
+			ws[f'H{row + i}'] = wed
+		elif wed == 'AF':
 			we = 0
 			ws[f'H{row + i}'] = f'{wed} | ({int(we)})'
 		elif first(wed) >= 18:

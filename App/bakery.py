@@ -1,270 +1,249 @@
 import pandas as pd
-import re
+import sqlite3
 
-def bakery_one(selected):
-    bakery_week_one_list = []
-    
-    # Read in excel file
-    file = '../CASHIERS_ROSTER.xlsx'
-    file_sheets = pd.ExcelFile(file).sheet_names
-    # Get Columns
-    columns = ['idx', 'CASHIERS', 'THU', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
-    # Get last sheet
-    sheet = file_sheets[selected]
-    # Read in file last sheet
-    data = pd.read_excel(file, sheet_name=sheet, index_col=0, header=4, usecols=columns)
+# ==============================================================================
+# BAKERS WEEK 1
+# ==============================================================================   
 
-    # Get week one from excel sheet
-    week_one_data = data.loc[13:14]
-    week_one = week_one_data.to_numpy()
-    
-    # FUNCTIONS
-    # Find numbers before dash and after dash
-    def first(weekday):
-        first = float(re.findall('[0-9.]+(?=.*\-)', weekday)[0])
-        return first
+def baker_one(selected):
+	# Get file
+	file = '../CASHIERS_ROSTER.xlsx'
+	file_sheets = pd.ExcelFile(file).sheet_names
 
-    def second(weekday):
-        second = float(re.findall('\-(.*)', weekday)[0])
-        return second
+	# Get Columns
+	columns = ['idx', 'CASHIERS', 'THU', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
 
-    # WORKINGS
-    for week in week_one:
-        name = week[0]
-        thur = week[1]
-        fri = week[2]
-        sat = week[3]
-        sun = week[4]
-        mon = week[5]
-        tue = week[6]
-        wed = week[7]
+	# Get Selected sheet
+	index = file_sheets.index(selected)
+	sheet = file_sheets[index]
 
-        if thur == 'AF' or thur.lower() == 'casher' or thur.lower() == 'cashier':
-            thur = 0
-        elif first(thur) == 6.3:
-            thur = second(thur) - 6.5    
-        elif second(thur) == 6.3:
-            thur = (24 - first(thur)) + 6.5
-        elif first(thur) >= 18:
-            thur = (24 - first(thur)) + second(thur)
-        elif first(thur) - second(thur) < 0:
-            thur = (first(thur) - second(thur)) * -1
-        else:
-            thur = first(thur) - second(thur)
+	# Get Times
+	data = pd.read_excel(file, sheet_name=sheet, index_col=0, header=4, usecols=columns)
+	data = data.fillna(0)
 
-        if fri == 'AF' or fri.lower() == 'casher' or fri.lower() == 'cashier':
-            fri = 0
-        elif first(fri) == 6.3:
-            fri = second(fri) - 6.5  
-        elif second(fri) == 6.3:
-            fri = (24 - first(fri)) + 6.5
-        elif first(fri) >= 18:
-            fri = (24 - first(fri)) + second(fri)
-        elif first(fri) - second(fri) < 0:
-            fri = (first(fri) - second(fri)) * -1
-        else:
-            fri = first(fri) - second(fri)
+	# Get Dates
+	data_date = pd.read_excel(file, sheet_name=sheet, header=None, nrows=4, usecols='C:I')
+	data_date_ex = data_date.loc[3]
 
-        if sat == 'AF' or sat.lower() == 'casher' or sat.lower() == 'cashier':
-            sat = 0
-        elif first(sat) == 6.3:
-            sat = second(sat) - 6.5
-        elif second(sat) == 6.3:
-            sat = (24 - first(sat)) + 6.5
-        elif first(sat) >= 18:
-            sat = (24 - first(sat)) + second(sat)
-        elif first(sat) - second(sat) < 0:
-            sat = (first(sat) - second(sat)) * -1    
-        else:
-            sat = first(sat) - second(sat)
+	weekone_dates = {}
+	for x in data_date_ex:
+		weekone_dates[x.strftime("%A")] = x.date().strftime("%d/%m/%y")
 
-        if sun == 'AF' or sun.lower() == 'casher' or sun.lower() == 'cashier':
-            sun = 0
-        elif first(sun) == 6.3:
-            sun = second(sun) - 6.5  
-        elif second(sun) == 6.3:
-            sun = (24 - first(sun)) + 6.5
-        elif first(sun) >= 18:
-            sun = (24 - first(sun)) + second(sun)
-        elif first(sun) - second(sun) < 0:
-            sun = (first(sun) - second(sun)) * -1
-        else:
-            sun = first(sun) - second(sun)
+	# # Get week one from excel sheet
+	week_one_b_data = data.loc[13:15]
 
-        if mon == 'AF' or mon.lower() == 'casher' or mon.lower() == 'cashier':
-            mon = 0
-        elif first(mon) == 6.3:
-            mon = second(mon) - 6.5  
-        elif second(mon) == 6.3:
-            mon = (24 - first(mon)) + 6.5
-        elif first(mon) >= 18:
-            mon = (24 - first(mon)) + second(mon)
-        elif first(mon) - second(mon) < 0:
-            mon = (first(mon) - second(mon)) * -1
-        else:
-            mon = first(mon) - second(mon)
+	week_one = []
+	for x in week_one_b_data.to_numpy().tolist():
+		if str(x[0]) != 'nan':
+			if x[0] != 0:
+				week_one.append(x)
 
-        if tue == 'AF' or tue.lower() == 'casher' or tue.lower() == 'cashier':
-            tue = 0
-        elif first(tue) == 6.3:
-            tue = second(tue) - 6.5  
-        elif second(tue) == 6.3:
-            tue = (24 - first(tue)) + 6.5
-        elif first(tue) >= 18:
-            tue = (24 - first(tue)) + second(tue)
-        elif first(tue) - second(tue) < 0:
-            tue = (first(tue) - second(tue)) * -1
-        else:
-            tue = first(tue) - second(tue)
+	# CREATE DATABASE SQLITE WEEK 1
+	con = sqlite3.connect("database/time_sheet.db")
+	c = con.cursor()
+	# Create table
+	c.execute(
+		"""CREATE TABLE IF NOT EXISTS rosterBakerWeekOne (
+			name TEXT,
+			badge TEXT,
+			thur TEXT,
+			fri TEXT,
+			sat TEXT,
+			sun TEXT,
+			mon TEXT,
+			tue TEXT,
+			wed TEXT
+			)"""
+	)
 
-        if wed == 'AF' or wed.lower() == 'casher' or wed.lower() == 'cashier':
-            wed = 0
-        elif first(wed) == 6.3:
-            wed = second(wed) - 6.5  
-        elif second(wed) == 6.3:
-            wed = (24 - first(wed)) + 6.5
-        elif first(wed) >= 18:
-            wed = (24 - first(wed)) + second(wed)
-        elif first(wed) - second(wed) < 0:
-            wed = (first(wed) - second(wed)) * -1
-        else:
-            wed = first(wed) - second(wed)
+	# Add week one data to table
+	query = """INSERT INTO rosterBakerWeekOne (
+			name,
+			badge,
+			thur,
+			fri,
+			sat,
+			sun,
+			mon,
+			tue,
+			wed
+			)
+			VALUES (?, ?, ?, ?, ? ,? ,?, ?, ?)"""
 
-        total_hours_week_one = thur + fri + sat + mon + tue + wed
-        bakery_week_one_list.append([name , total_hours_week_one , sun]) 
-    return bakery_week_one_list
+	c.execute(query, ("Date", "999", 0, 0, 0, 0, 0, 0, 0))
 
-def bakery_two(selected):
-    bakery_week_two_list = []
+	for week in week_one:
+		x = (week[0], 0, week[1], week[2], week[3], week[4], week[5], week[6], week[7])
+		c.execute(query, (x))
 
-    file = '../CASHIERS_ROSTER.xlsx'
-    file_sheets = pd.ExcelFile(file).sheet_names
-    # Get Columns
-    columns = ['idx', 'CASHIERS', 'THU', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
-    # Get last sheet
-    sheet = file_sheets[selected]
-    # Read in file last sheet
-    data = pd.read_excel(file, sheet_name=sheet, index_col=0, header=4, usecols=columns)
+		con.commit()
 
-    # Get week two from excel sheet
-    week_two_data = data.loc[15:16]
-    week_two = week_two_data.to_numpy()
-    
-    # FUNCTIONS
-    # Find numbers before dash and after dash
-    def first(weekday):
-        first = float(re.findall('[0-9.]+(?=.*\-)', weekday)[0])
-        return first
+	# UPDATE TABLE WITH DATES FROM ROSTER
+	con = sqlite3.connect("database/time_sheet.db")
+	c = con.cursor()
 
-    def second(weekday):
-        second = float(re.findall('\-(.*)', weekday)[0])
-        return second
-    
-    # WORKINGS
-    for week in week_two:
-        name = week[0]
-        thur = week[1]
-        fri = week[2]
-        sat = week[3]
-        sun = week[4]
-        mon = week[5]
-        tue = week[6]
-        wed = week[7]
+	query = """UPDATE rosterBakerWeekOne SET
+			thur = ?,
+			fri = ?,
+			sat = ?,
+			sun = ?,
+			mon = ?,
+			tue = ?,
+			wed = ?
+			WHERE badge = ?
+			"""
+	thursday = weekone_dates["Thursday"]
+	friday = weekone_dates["Friday"]
+	saturday = weekone_dates["Saturday"]
+	sunday = weekone_dates["Sunday"]
+	monday = weekone_dates["Monday"]
+	tuesday = weekone_dates["Tuesday"]
+	wednesday = weekone_dates["Wednesday"]
 
-        if thur == 'AF' or thur.lower() == 'casher' or thur.lower() == 'cashier':
-            thur = 0
-        elif first(thur) == 6.3:
-            thur = second(thur) - 6.5    
-        elif second(thur) == 6.3:
-            thur = (24 - first(thur)) + 6.5
-        elif first(thur) >= 18:
-            thur = (24 - first(thur)) + second(thur)
-        elif first(thur) - second(thur) < 0:
-            thur = (first(thur) - second(thur)) * -1
-        else:
-            thur = first(thur) - second(thur)
+	c.execute(
+		query, (thursday, friday, saturday, sunday, monday, tuesday, wednesday, 999)
+	)
+	con.commit()
+	
+	# GET ALL INFO FROM DATABASE FOR PROCESSING
+	con = sqlite3.connect("database/time_sheet.db")
+	c = con.cursor()
 
-        if fri == 'AF' or fri.lower() == 'casher' or fri.lower() == 'cashier':
-            fri = 0
-        elif first(fri) == 6.3:
-            fri = second(fri) - 6.5  
-        elif second(fri) == 6.3:
-            fri = (24 - first(fri)) + 6.5
-        elif first(fri) >= 18:
-            fri = (24 - first(fri)) + second(fri)
-        elif first(fri) - second(fri) < 0:
-            fri = (first(fri) - second(fri)) * -1
-        else:
-            fri = first(fri) - second(fri)
+	c.execute("SELECT name FROM rosterBakerWeekOne")
+	name_records = c.fetchall()
 
-        if sat == 'AF' or sat.lower() == 'casher' or sat.lower() == 'cashier':
-            sat = 0
-        elif first(sat) == 6.3:
-            sat = second(sat) - 6.5  
-        elif second(sat) == 6.3:
-            sat = (24 - first(sat)) + 6.5
-        elif first(sat) >= 18:
-            sat = (24 - first(sat)) + second(sat)
-        elif first(sat) - second(sat) < 0:
-            sat = (first(sat) - second(sat)) * -1
-        else:
-            sat = first(sat) - second(sat)
+	week_one_data_db = []
 
-        if sun == 'AF' or sun.lower() == 'casher' or sun.lower() == 'cashier':
-            sun = 0
-        elif first(sun) == 6.3:
-            sun = second(sun) - 6.5  
-        elif second(sun) == 6.3:
-            sun = (24 - first(sun)) + 6.5
-        elif first(sun) >= 18:
-            sun = (24 - first(sun)) + second(sun)
-        elif first(sun) - second(sun) < 0:
-            sun = (first(sun) - second(sun)) * -1
-        else:
-            sun = first(sun) - second(sun)
+	for record in name_records:
+		# Grab data from database using name of person
+		c.execute("SELECT * FROM rosterBakerWeekOne where name=?", (record[0],))
+		r = c.fetchall()
+		if record[0] != 'Date':
+			week_one_data_db.append(r)
 
-        if mon == 'AF' or mon.lower() == 'casher' or mon.lower() == 'cashier':
-            mon = 0
-        elif first(mon) == 6.3:
-            mon = second(mon) - 6.5  
-        elif second(mon) == 6.3:
-            mon = (24 - first(mon)) + 6.5
-        elif first(mon) >= 18:
-            mon = (24 - first(mon)) + second(mon)
-        elif first(mon) - second(mon) < 0:
-            mon = (first(mon) - second(mon)) * -1
-        else:
-            mon = first(mon) - second(mon)
+	con.close()
 
-        if tue == 'AF' or tue.lower() == 'casher' or tue.lower() == 'cashier':
-            tue = 0
-        elif first(tue) == 6.3:
-            tue = second(tue) - 6.5  
-        elif second(tue) == 6.3:
-            tue = (24 - first(tue)) + 6.5
-        elif first(tue) >= 18:
-            tue = (24 - first(tue)) + second(tue)
-        elif first(tue) - second(tue) < 0:
-            tue = (first(tue) - second(tue)) * -1
-        else:
-            tue = first(tue) - second(tue)
+	return week_one_data_db, weekone_dates
 
-        if wed == 'AF' or wed.lower() == 'casher' or wed.lower() == 'cashier':
-            wed = 0
-        elif first(wed) == 6.3:
-            wed = second(wed) - 6.5  
-        elif second(wed) == 6.3:
-            wed = (24 - first(wed)) + 6.5
-        elif first(wed) >= 18:
-            wed = (24 - first(wed)) + second(wed)
-        elif first(wed) - second(wed) < 0:
-            wed = (first(wed) - second(wed)) * -1
-        else:
-            wed = first(wed) - second(wed)
+# ==============================================================================
+# CASHIERS WEEK 2
+# ==============================================================================  
 
-        total_hours_week_two = thur + fri + sat + mon + tue + wed
-        bakery_week_two_list.append([name , total_hours_week_two , sun])
-    return bakery_week_two_list
+def baker_two(selected):
+	# Get file
+	file = '../CASHIERS_ROSTER.xlsx'
+	file_sheets = pd.ExcelFile(file).sheet_names
 
+	# Get Columns
+	columns = ['idx', 'CASHIERS', 'THU', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
 
+	# Get Selected sheet
+	index = file_sheets.index(selected)
+	sheet = file_sheets[index]
 
+	# Get Times
+	data = pd.read_excel(file, sheet_name=sheet, index_col=0, header=4, usecols=columns)
+	data = data.fillna(0)
+
+	# Get Dates
+	data_date = pd.read_excel(file, sheet_name=sheet, header=None, usecols='C:I').loc[12]
+
+	weektwo_dates = {}
+	for x in data_date:
+		weektwo_dates[x.strftime("%A")] = x.date().strftime("%d/%m/%y")
+
+	# Get week two from excel sheet
+	week_two_b_data = data.loc[16:18]
+
+	week_two = []
+	for x in week_two_b_data.to_numpy().tolist():
+		if str(x[0]) != 'nan':
+			if x[0] != 0:
+				week_two.append(x)
+
+	# CREATE DATABASE SQLITE WEEK 2
+	con = sqlite3.connect("database/time_sheet.db")
+	c = con.cursor()
+	# Create table
+	c.execute(
+		"""CREATE TABLE IF NOT EXISTS rosterBakerWeekTwo (
+			name TEXT,
+			badge TEXT,
+			thur TEXT,
+			fri TEXT,
+			sat TEXT,
+			sun TEXT,
+			mon TEXT,
+			tue TEXT,
+			wed TEXT
+			)"""
+	)
+
+	# Add week one data to table
+	week2 = """INSERT INTO rosterBakerWeekTwo (
+			name,
+			badge,
+			thur,
+			fri,
+			sat,
+			sun,
+			mon,
+			tue,
+			wed
+			)
+			VALUES (?, ?, ?, ?, ? ,? ,?, ?, ?)"""
+
+	c.execute(week2, ("Date", "999", 0, 0, 0, 0, 0, 0, 0))
+
+	for week in week_two:
+		x = (week[0], 0, week[1], week[2], week[3], week[4], week[5], week[6], week[7])
+		c.execute(week2, (x))
+
+		con.commit()
+
+	# UPDATE TABLE WITH DATES FROM ROSTER
+	con = sqlite3.connect("database/time_sheet.db")
+	c = con.cursor()
+
+	query = """UPDATE rosterBakerWeekTwo SET
+			thur = ?,
+			fri = ?,
+			sat = ?,
+			sun = ?,
+			mon = ?,
+			tue = ?,
+			wed = ?
+			WHERE badge = ?
+			"""
+	thursday = weektwo_dates["Thursday"]
+	friday = weektwo_dates["Friday"]
+	saturday = weektwo_dates["Saturday"]
+	sunday = weektwo_dates["Sunday"]
+	monday = weektwo_dates["Monday"]
+	tuesday = weektwo_dates["Tuesday"]
+	wednesday = weektwo_dates["Wednesday"]
+
+	c.execute(
+		query, (thursday, friday, saturday, sunday, monday, tuesday, wednesday, 999)
+	)
+	con.commit()
+
+	# GET ALL INFO FROM DATABASE FOR PROCESSING
+	con = sqlite3.connect("database/time_sheet.db")
+	c = con.cursor()
+
+	c.execute("SELECT name FROM rosterBakerWeekTwo")
+	name_records = c.fetchall()
+
+	week_two_data_db = []
+
+	for record in name_records:
+		# Grab data from database using name of person
+		c.execute("SELECT * FROM rosterBakerWeekTwo where name=?", (record[0],))
+		r = c.fetchall()
+		if record[0] != 'Date':
+			week_two_data_db.append(r)
+
+	con.close()
+
+	return week_two_data_db, weektwo_dates
