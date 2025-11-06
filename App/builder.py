@@ -1,7 +1,7 @@
 from openpyxl import Workbook
 from openpyxl import load_workbook
+import os
 import re
-import attendants as at
 
 
 # ==============================================================================
@@ -11,7 +11,7 @@ import attendants as at
 # Track total hours
 total_hours = {}
 
-def build_excel(roster, week_dates, week_data, week=1): 
+def build_excel(roster, week_data, week_dates, week): 
 	# FUNCTIONS
 	# Find numbers before dash and after dash
 	def first(weekday):
@@ -23,43 +23,23 @@ def build_excel(roster, week_dates, week_data, week=1):
 		second = float(re.findall('\-(.*)', weekday)[0])
 		return second
 	
-	# # Get employee data
-	# if week == 1:
-	# 	week_data = week_one_info()
-	# else:
-	# 	week_data = week_two_info()
-	
+	# Check if Total time excel exists
+	if not os.path.exists('Total Time Worked.xlsx'):
+		wb = Workbook()
+		wb.active.title = "Attendants"
+		wb.create_sheet("Cashiers")
+		wb.create_sheet("Bakers")
+		wb.save('Total Time Worked.xlsx')
+
 	# ##############################################
 	# BUILD OUT EXCEL FILE
 	# ##############################################
 
 	# Start workbook or continue
-	if week == 1:
-		wb = Workbook()
-		wb.active.title = 'Attendents'
-		ws = wb['Attendents']
-	else:
-		wb = load_workbook("Total Time Worked.xlsx")
-		ws = wb['Attendents']
-
-	# Get days of week
-	# if week == 1:
-	# 	thursday = weekone_dates["Thursday"]
-	# 	friday = weekone_dates["Friday"]
-	# 	saturday = weekone_dates["Saturday"]
-	# 	sunday = weekone_dates["Sunday"]
-	# 	monday = weekone_dates["Monday"]
-	# 	tuesday = weekone_dates["Tuesday"]
-	# 	wednesday = weekone_dates["Wednesday"]
-	# else:
-	# 	thursday = weektwo_dates["Thursday"]
-	# 	friday = weektwo_dates["Friday"]
-	# 	saturday = weektwo_dates["Saturday"]
-	# 	sunday = weektwo_dates["Sunday"]
-	# 	monday = weektwo_dates["Monday"]
-	# 	tuesday = weektwo_dates["Tuesday"]
-	# 	wednesday = weektwo_dates["Wednesday"]
-
+	wb = load_workbook("Total Time Worked.xlsx")
+	ws = wb[roster]
+		
+	# Get dates of week 
 	if week == 1:
 		thursday = week_dates["Thursday"]
 		friday = week_dates["Friday"]
@@ -241,6 +221,3 @@ def build_excel(roster, week_dates, week_data, week=1):
 	# Close workbook
 	wb.save("Total Time Worked.xlsx")
 	wb.close()
-
-build_excel()
-build_excel(2)

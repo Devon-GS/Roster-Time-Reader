@@ -7,15 +7,18 @@ import pandas as pd
 import attendants as att
 import cashiers as ca
 import bakery as b
+import builder as build
 import sqlite3
 
 # ############# NOTES #############################################
-# If nothing selected do nothing
-# Not make so many connection to database
+# error handling
 # #################################################################
 
 root = Tk()
 
+# ==============================================================================
+# FUNCTIONS
+# ==============================================================================
 def clean_database():
     con = sqlite3.connect('database/time_Sheet.db')
     c = con.cursor()
@@ -33,7 +36,22 @@ def run_calculator():
 
 	# Clean database
 	clean_database()
-	
+
+	# Build attendants Week 1 and Week 2
+	if attendant != '':
+		at_one = att.attendant_one(attendant)
+		at_two = att.attendant_two(attendant)
+
+		build.build_excel('Attendants', at_one[0], at_one[1], week=1)
+		build.build_excel('Attendants', at_two[0], at_two[1], week=2)
+
+	# Open total time excel
+	os.system('start "EXCEL.EXE" "Total Time Worked.xlsx"') 
+
+
+# ==============================================================================
+# GUI
+# ==============================================================================
 	
 # Test if files are in location
 try:

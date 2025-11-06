@@ -115,7 +115,7 @@ def attendant_one(selected):
 
 	con.close()
 	
-	return week_one_data_db
+	return week_one_data_db, weekone_dates
 
 # ==============================================================================
 # ATTENDENTS WEEK 2
@@ -234,7 +234,4 @@ def attendant_two(selected):
 
 	con.close()
 
-	return week_two_data_db
-
-attendant_one('ROSTER 22 OCT 25')
-attendant_two('ROSTER 22 OCT 25')
+	return week_two_data_db, weektwo_dates
