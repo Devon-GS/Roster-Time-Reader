@@ -1,18 +1,20 @@
 # Roster-Time-Reader
 
-Calculates fortnight working hours of employees based on companies specific roster. 
-Puts roster times and hours wored in to excel workbook.
+Calculates fortnight working hours of employees based on company's specific roster. 
+Puts roster times and hours worked in to excel workbook.
 
-### <ins>Fixed Issues</ins>
+### <ins>Fixed Issues:</ins>
 
-- 08 March 2024     [Patch009]  - Fixed issues with hour calculation
+- 08 March 2024     [Patch001]  - Fixed issues with hour calculation
+- 05 November 2025     [Patch002]  - Add error handling 
+
 - [ Date ]      [ patch ]       - [ Fixed ]  
 
-### <ins>Currently Working On [patch002]</ins>
+### <ins>Currently Working On:</ins>
 
 - Rewrite of program to build out roster and times into excel workbook
 
-### <ins>Installing and Running Program</ins>
+### <ins>Installing and Running Program:</ins>
 
 Install environment
 

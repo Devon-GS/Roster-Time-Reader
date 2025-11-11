@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from PIL import ImageTk,Image
 import os
 from os import path
@@ -11,8 +12,6 @@ import builder as build
 import sqlite3
 
 # ########################## NOTES ################################
-# error handling [PermissionError]
-# check to see if same dates seleted
 # formatting
 # #################################################################
 
@@ -40,45 +39,63 @@ def clean_database():
 	con.commit()
 	con.close() 
 
+def sheet_date_checker(attendant, cashier, baker):
+	a = attendant[-9:]
+	c = cashier[-9:]
+	b = baker[-9:]
+
+	if a == c == b:
+		return True
+
 def run_calculator():
-	attendant = attendant_selectbox.get()
-	cashier = cashier_selectbox.get()
-	baker = bakery_selectbox.get()
+	try:
+		attendant = attendant_selectbox.get()
+		cashier = cashier_selectbox.get()
+		baker = bakery_selectbox.get()
+		
+		# Check if data of sheets match 
+		if not sheet_date_checker(attendant, cashier, baker):
+			ans = messagebox.askyesno(title='Dates Not Matching', message='The dates of the select sheet do not match. Do you want to continue?')
+			if not ans:
+				raise Exception('Operation Canceled By User')
+				
+		# Clean database
+		clean_database()
 
-	# Clean database
-	clean_database()
+		# Remove total time worked.xlsx
+		if os.path.exists('Total Time Worked.xlsx'):
+			os.remove('Total Time Worked.xlsx')
 
-	# Remove total time worked.xlsx
-	if os.path.exists('Total Time Worked.xlsx'):
-		os.remove('Total Time Worked.xlsx')
+		# Build attendants Week 1 and Week 2
+		if attendant != '':
+			at_one = att.attendant_one(attendant)
+			at_two = att.attendant_two(attendant)
 
-	# Build attendants Week 1 and Week 2
-	if attendant != '':
-		at_one = att.attendant_one(attendant)
-		at_two = att.attendant_two(attendant)
+			build.build_excel('Attendants', at_one[0], at_one[1], week=1)
+			build.build_excel('Attendants', at_two[0], at_two[1], week=2)
 
-		build.build_excel('Attendants', at_one[0], at_one[1], week=1)
-		build.build_excel('Attendants', at_two[0], at_two[1], week=2)
+		# Build cashier Week 1 and Week 2
+		if cashier != '':
+			cas_one = cas.cashier_one(cashier)
+			cas_two = cas.cashier_two(cashier)
 
-	# Build cashier Week 1 and Week 2
-	if cashier != '':
-		cas_one = cas.cashier_one(cashier)
-		cas_two = cas.cashier_two(cashier)
+			build.build_excel('Cashiers', cas_one[0], cas_one[1], week=1)
+			build.build_excel('Cashiers', cas_two[0], cas_two[1], week=2)
+		
+		# Build baker Week 1 and Week 2
+		if baker != '':
+			bak_one = bak.baker_one(baker)
+			bak_two = bak.baker_two(baker)
 
-		build.build_excel('Cashiers', cas_one[0], cas_one[1], week=1)
-		build.build_excel('Cashiers', cas_two[0], cas_two[1], week=2)
-	
-	# Build baker Week 1 and Week 2
-	if baker != '':
-		bak_one = bak.baker_one(baker)
-		bak_two = bak.baker_two(baker)
+			build.build_excel('Bakers', bak_one[0], bak_one[1], week=1)
+			build.build_excel('Bakers', bak_two[0], bak_two[1], week=2)
 
-		build.build_excel('Bakers', bak_one[0], bak_one[1], week=1)
-		build.build_excel('Bakers', bak_two[0], bak_two[1], week=2)
-
-	# Open total time excel
-	os.system('start "EXCEL.EXE" "Total Time Worked.xlsx"') 
-
+		# Open total time excel
+		os.system('start "EXCEL.EXE" "Total Time Worked.xlsx"') 
+	except PermissionError:
+		messagebox.showerror(title='ERROR', message="Please close 'Total Time Worked.xlsx' and try again!")
+	except Exception as error:
+		messagebox.showerror(title='ERROR', message=error)
 
 # ==============================================================================
 # GUI
@@ -144,7 +161,7 @@ root.iconbitmap('icons/time.ico')
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 app_width = 450 
-app_height = 700
+app_height = 150
 x = (screen_width / 2) - (app_width / 2)
 y = (screen_height / 2) - (app_height / 2)
 root.geometry(f'{app_width}x{app_height}+{int(x)}+{int(y)}')
