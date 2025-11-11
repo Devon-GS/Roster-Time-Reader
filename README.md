@@ -6,13 +6,14 @@ Puts roster times and hours worked in to excel workbook.
 ### <ins>Fixed Issues:</ins>
 
 - 08 March 2024     [Patch001]  - Fixed issues with hour calculation
-- 05 November 2025     [Patch002]  - Add error handling 
+- 05 November 2025  [Patch002]  - Add error handling 
+- 11 November 2025  [Patch003]  - Add formating of the excel sheet [Rewrite finished] 
 
 - [ Date ]      [ patch ]       - [ Fixed ]  
 
 ### <ins>Currently Working On:</ins>
 
-- Rewrite of program to build out roster and times into excel workbook
+- N/A
 
 ### <ins>Installing and Running Program:</ins>
 

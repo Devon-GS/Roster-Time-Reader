@@ -9,11 +9,8 @@ import attendants as att
 import cashiers as cas
 import bakery as bak
 import builder as build
+import format as f
 import sqlite3
-
-# ########################## NOTES ################################
-# formatting
-# #################################################################
 
 root = Tk()
 
@@ -89,6 +86,12 @@ def run_calculator():
 
 			build.build_excel('Bakers', bak_one[0], bak_one[1], week=1)
 			build.build_excel('Bakers', bak_two[0], bak_two[1], week=2)
+
+		# Format excel
+		if attendant != '':
+			f.format('Attendants')
+		if cashier != '':
+			f.format('Cashiers')
 
 		# Open total time excel
 		os.system('start "EXCEL.EXE" "Total Time Worked.xlsx"') 

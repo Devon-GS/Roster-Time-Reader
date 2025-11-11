@@ -73,8 +73,12 @@ def build_excel(roster, week_data, week_dates, week):
 		else:
 			hd_row = 16
 			shd_row = 17
+	
+	if week == 1:
+		ws[f'A{hd_row}'] = 'Week 1'
+	else:
+		ws[f'A{hd_row}'] = 'Week 2'
 
-	ws[f'A{hd_row}'] = 'Week 1'
 	ws[f'B{hd_row}'] = thursday
 	ws[f'C{hd_row}'] = friday
 	ws[f'D{hd_row}'] = saturday
@@ -95,9 +99,18 @@ def build_excel(roster, week_data, week_dates, week):
 	ws[f'J{shd_row}'] = 'Hours'
 	ws[f'K{shd_row}'] = 'Sun Hours'
 
-	ws['M17'] = 'Name'
-	ws['N17'] = 'Total Hours'
-	ws['O17'] = 'Total Sun Hours'
+	if week == 1 and roster == 'Attendants':
+		ws['M17'] = 'Name'
+		ws['N17'] = 'Total Hours'
+		ws['O17'] = 'Total Sun Hours'
+	else:
+		ws['M17'] = 'Name'
+		ws['N17'] = 'Total Hours'
+		ws['O17'] = 'Total Sun Hours'
+
+		ws['M24'] = 'Name'
+		ws['N24'] = 'Total Hours'
+		ws['O24'] = 'Total Sun Hours'
 
 	# Row and column start
 	if week == 1:

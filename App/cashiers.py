@@ -31,18 +31,12 @@ def cashier_one(selected):
 
 	# # Get week one from excel sheet
 	week_one_data = data.loc[1:6]
-	# week_one_b_data = data.loc[13:15]
 
 	week_one = []
 	for x in week_one_data.to_numpy().tolist():
 		if str(x[0]) != 'nan':
 			if x[0] != 0:
 				week_one.append(x)
-
-	# for x in week_one_b_data.to_numpy().tolist():
-	# 	if str(x[0]) != 'nan':
-	# 		if x[0] != 0:
-	# 			week_one.append(x)
 
 	# CREATE DATABASE SQLITE WEEK 1
 	con = sqlite3.connect("database/time_sheet.db")
@@ -160,18 +154,12 @@ def cashier_two(selected):
 
 	# Get week two from excel sheet
 	week_two_data = data.loc[7:12]
-	# week_two_b_data = data.loc[16:18]
 
 	week_two = []
 	for x in week_two_data.to_numpy().tolist():
 		if str(x[0]) != 'nan':
 			if x[0] != 0:
 				week_two.append(x)
-
-	# for x in week_two_b_data.to_numpy().tolist():
-	# 	if str(x[0]) != 'nan':
-	# 		if x[0] != 0:
-	# 			week_two.append(x)
 
 	# CREATE DATABASE SQLITE WEEK 2
 	con = sqlite3.connect("database/time_sheet.db")
