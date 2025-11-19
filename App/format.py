@@ -6,7 +6,7 @@ from openpyxl.styles import Alignment, NamedStyle, Font, Border, Side
 columns_size = {'A':11.75, 'All':10.25, 'J':6.25, 'K':9.89, 'M':11.25, 'N':11.04, 'O':14.89}
 
 def format(sheet):
-	wb = load_workbook('Total Time Worked.xlsx')
+	wb = load_workbook('_internal/Total Time Worked.xlsx')
 	ws = wb[sheet]
 
 	total_format = NamedStyle(name="total_format")
@@ -87,5 +87,5 @@ def format(sheet):
 		for cell in ws['M']:
 			cell.alignment = Alignment(horizontal='left')
 
-	wb.save('Total Time Worked.xlsx')
+	wb.save('_internal/Total Time Worked.xlsx')
 	wb.close()

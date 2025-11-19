@@ -18,7 +18,7 @@ root = Tk()
 # FUNCTIONS
 # ==============================================================================
 def clean_database():
-	con = sqlite3.connect('database/time_Sheet.db')
+	con = sqlite3.connect('_internal/database/time_Sheet.db')
 	c = con.cursor()
 
 	# Clear attendents
@@ -60,8 +60,8 @@ def run_calculator():
 		clean_database()
 
 		# Remove total time worked.xlsx
-		if os.path.exists('Total Time Worked.xlsx'):
-			os.remove('Total Time Worked.xlsx')
+		if os.path.exists('_internal/Total Time Worked.xlsx'):
+			os.remove('_internal/Total Time Worked.xlsx')
 
 		# Build attendants Week 1 and Week 2
 		if attendant != '':
@@ -94,7 +94,7 @@ def run_calculator():
 			f.format('Cashiers')
 
 		# Open total time excel
-		os.system('start "EXCEL.EXE" "Total Time Worked.xlsx"') 
+		os.system('start "EXCEL.EXE" "_internal/Total Time Worked.xlsx"') 
 	except PermissionError:
 		messagebox.showerror(title='ERROR', message="Please close 'Total Time Worked.xlsx' and try again!")
 	except Exception as error:
@@ -110,7 +110,7 @@ try:
 	if file == False:
 		raise FileNotFoundError
 except FileNotFoundError:
-	error_label = Label(root, text='File CASHIERS_ROSTER.xls not found')
+	error_label = Label(root, text='File CASHIERS_ROSTER.xlsx not found')
 	error_label.grid(row=1, column=0, sticky=N+E+S+W, pady=(2, 0), padx=(5, 0))
 else:
 	try:
@@ -118,7 +118,7 @@ else:
 		if file == False:
 			raise FileNotFoundError
 	except FileNotFoundError:
-		error_label = Label(root, text='File Attebdant_Carwash_Roster.xls not found')
+		error_label = Label(root, text='File Attebdant_Carwash_Roster.xlsx not found')
 		error_label.grid(row=1, column=0, sticky=N+E+S+W, pady=(2, 0), padx=(5, 0))
 	else:
 		file_a = '../Attendant_Carwash_Roster.xlsx'
@@ -127,9 +127,9 @@ else:
 		file_c = '../CASHIERS_ROSTER.xlsx'
 		file_sheets_c = pd.ExcelFile(file_c).sheet_names
 
-		db_dir = path.exists('database')
+		db_dir = path.exists('_internal/database')
 		if db_dir == False:
-			os.mkdir('database')
+			os.mkdir('_internal/database')
 
 		# LABEL AND COMBOBOX
 		# Attendant time
@@ -159,7 +159,7 @@ else:
 
 # Window layout
 root.title('Calculate Roster Time')
-root.iconbitmap('icons/time.ico')
+root.iconbitmap('_internal/icons/time.ico')
 # root.columnconfigure(0, minsize=200)
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()

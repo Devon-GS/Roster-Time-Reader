@@ -39,7 +39,7 @@ def cashier_one(selected):
 				week_one.append(x)
 
 	# CREATE DATABASE SQLITE WEEK 1
-	con = sqlite3.connect("database/time_sheet.db")
+	con = sqlite3.connect("_internal/database/time_sheet.db")
 	c = con.cursor()
 	# Create table
 	c.execute(
@@ -79,7 +79,7 @@ def cashier_one(selected):
 		con.commit()
 
 	# UPDATE TABLE WITH DATES FROM ROSTER
-	con = sqlite3.connect("database/time_sheet.db")
+	con = sqlite3.connect("_internal/database/time_sheet.db")
 	c = con.cursor()
 
 	query = """UPDATE rosterCashierWeekOne SET
@@ -106,7 +106,7 @@ def cashier_one(selected):
 	con.commit()
 	
 	# GET ALL INFO FROM DATABASE FOR PROCESSING
-	con = sqlite3.connect("database/time_sheet.db")
+	con = sqlite3.connect("_internal/database/time_sheet.db")
 	c = con.cursor()
 
 	c.execute("SELECT name FROM rosterCashierWeekOne")
@@ -162,7 +162,7 @@ def cashier_two(selected):
 				week_two.append(x)
 
 	# CREATE DATABASE SQLITE WEEK 2
-	con = sqlite3.connect("database/time_sheet.db")
+	con = sqlite3.connect("_internal/database/time_sheet.db")
 	c = con.cursor()
 	# Create table
 	c.execute(
@@ -202,7 +202,7 @@ def cashier_two(selected):
 		con.commit()
 
 	# UPDATE TABLE WITH DATES FROM ROSTER
-	con = sqlite3.connect("database/time_sheet.db")
+	con = sqlite3.connect("_internal/database/time_sheet.db")
 	c = con.cursor()
 
 	query = """UPDATE rosterCashierWeekTwo SET
@@ -229,7 +229,7 @@ def cashier_two(selected):
 	con.commit()
 
 	# GET ALL INFO FROM DATABASE FOR PROCESSING
-	con = sqlite3.connect("database/time_sheet.db")
+	con = sqlite3.connect("_internal/database/time_sheet.db")
 	c = con.cursor()
 
 	c.execute("SELECT name FROM rosterCashierWeekTwo")

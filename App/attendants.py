@@ -37,7 +37,7 @@ def attendant_one(selected):
 				week_one.append(x)
 
 	# CREATE DATABASE SQLITE WEEK 1
-	con = sqlite3.connect("database/time_sheet.db")
+	con = sqlite3.connect("_internal/database/time_sheet.db")
 	c = con.cursor()
 	# Create table
 	c.execute(
@@ -153,7 +153,7 @@ def attendant_two(selected):
 				week_two.append(x)
 
 	# CREATE DATABASE SQLITE WEEK 2
-	con = sqlite3.connect("database/time_sheet.db")
+	con = sqlite3.connect("_internal/database/time_sheet.db")
 	c = con.cursor()
 	# Create table
 	c.execute(
@@ -193,7 +193,7 @@ def attendant_two(selected):
 		con.commit()
 
 	# UPDATE TABLE WITH DATES FROM ROSTER
-	con = sqlite3.connect("database/time_sheet.db")
+	con = sqlite3.connect("_internal/database/time_sheet.db")
 	c = con.cursor()
 
 	query = """UPDATE rosterAttWeekTwo SET

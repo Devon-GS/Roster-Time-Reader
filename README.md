@@ -8,12 +8,13 @@ Puts roster times and hours worked in to excel workbook.
 - 08 March 2024     [Patch001]  - Fixed issues with hour calculation
 - 05 November 2025  [Patch002]  - Add error handling 
 - 11 November 2025  [Patch003]  - Add formating of the excel sheet [Rewrite finished] 
+- 19 November 2025  [Patch004]  - Changed paths for Excel, Database and Icons for production 
 
 - [ Date ]      [ patch ]       - [ Fixed ]  
 
-### <ins>Currently Working On:</ins>
+<!-- ### <ins>Currently Working On:</ins>
 
-- N/A
+- N/A -->
 
 ### <ins>Installing and Running Program:</ins>
 

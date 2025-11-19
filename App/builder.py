@@ -23,18 +23,18 @@ def build_excel(roster, week_data, week_dates, week):
 		return second
 	
 	# Check if Total time excel exists
-	if not os.path.exists('Total Time Worked.xlsx'):
+	if not os.path.exists('_internal/Total Time Worked.xlsx'):
 		wb = Workbook()
 		wb.active.title = "Attendants"
 		wb.create_sheet("Cashiers")
-		wb.save('Total Time Worked.xlsx')
+		wb.save('_internal/Total Time Worked.xlsx')
 
 	# ##############################################
 	# BUILD OUT EXCEL FILE
 	# ##############################################
 
 	# Start workbook or continue
-	wb = load_workbook("Total Time Worked.xlsx")
+	wb = load_workbook("_internal/Total Time Worked.xlsx")
 	if roster == 'Bakers':
 		ws = wb['Cashiers']
 	else:
@@ -270,5 +270,5 @@ def build_excel(roster, week_data, week_dates, week):
 		i += 1 
 		
 	# Close workbook
-	wb.save("Total Time Worked.xlsx")
+	wb.save("_internal/Total Time Worked.xlsx")
 	wb.close()
