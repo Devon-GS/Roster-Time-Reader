@@ -10,7 +10,7 @@ Puts roster times and hours worked in to excel workbook.
 - 11 November 2025  [Patch003]  - Add formating of the excel sheet [Rewrite finished] 
 - 19 November 2025  [Patch004]  - Changed paths for Excel, Database and Icons for production 
 
-- [ Date ]      [ patch ]       - [ Fixed ]  
+<!-- - [ Date ]      [ patch ]       - [ Fixed ]   -->
 
 <!-- ### <ins>Currently Working On:</ins>
 
