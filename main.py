@@ -2,9 +2,10 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from PIL import ImageTk,Image
-import os
+from openpyxl import load_workbook
 from os import path
-import pandas as pd
+import os
+import sys
 import attendants as att
 import cashiers as cas
 import bakery as bak
@@ -17,8 +18,20 @@ root = Tk()
 # ==============================================================================
 # FUNCTIONS
 # ==============================================================================
+def get_resource(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        # In PyInstaller 6+ onedir mode, this points to the '_internal' folder automatically
+        base_path = sys._MEIPASS
+    except Exception:
+        # In development, use the current directory or the script's directory
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 def clean_database():
-	con = sqlite3.connect('_internal/database/time_Sheet.db')
+	con = sqlite3.connect(get_resource('database/time_Sheet.db'))
 	c = con.cursor()
 
 	# Clear attendents
@@ -43,6 +56,13 @@ def sheet_date_checker(attendant, cashier, baker):
 
 	if a == c == b:
 		return True
+	
+def get_sheet_names(file):
+	wb = load_workbook(file, read_only=True)
+	sheet_names = wb.sheetnames
+	wb.close()
+
+	return sheet_names
 
 def run_calculator():
 	try:
@@ -60,8 +80,8 @@ def run_calculator():
 		clean_database()
 
 		# Remove total time worked.xlsx
-		if os.path.exists('_internal/Total Time Worked.xlsx'):
-			os.remove('_internal/Total Time Worked.xlsx')
+		if os.path.exists(get_resource('Total Time Worked.xlsx')):
+			os.remove(get_resource('Total Time Worked.xlsx'))
 
 		# Build attendants Week 1 and Week 2
 		if attendant != '':
@@ -94,7 +114,7 @@ def run_calculator():
 			f.format('Cashiers')
 
 		# Open total time excel
-		os.system('start "EXCEL.EXE" "_internal/Total Time Worked.xlsx"') 
+		os.startfile(f'{get_resource("Total Time Worked.xlsx")}') 
 	except PermissionError:
 		messagebox.showerror(title='ERROR', message="Please close 'Total Time Worked.xlsx' and try again!")
 	except Exception as error:
@@ -122,14 +142,14 @@ else:
 		error_label.grid(row=1, column=0, sticky=N+E+S+W, pady=(2, 0), padx=(5, 0))
 	else:
 		file_a = '../Attendant_Carwash_Roster.xlsx'
-		file_sheets_a = pd.ExcelFile(file_a).sheet_names
+		file_sheets_a = get_sheet_names(file_a)
 		
 		file_c = '../CASHIERS_ROSTER.xlsx'
-		file_sheets_c = pd.ExcelFile(file_c).sheet_names
+		file_sheets_c = get_sheet_names(file_c)
 
-		db_dir = path.exists('_internal/database')
+		db_dir = path.exists(get_resource('database/time_Sheet.db'))
 		if db_dir == False:
-			os.mkdir('_internal/database')
+			os.mkdir('database')
 
 		# LABEL AND COMBOBOX
 		# Attendant time
@@ -159,7 +179,7 @@ else:
 
 # Window layout
 root.title('Calculate Roster Time')
-root.iconbitmap('_internal/icons/time.ico')
+root.iconbitmap(get_resource('icons/time.ico'))
 # root.columnconfigure(0, minsize=200)
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()

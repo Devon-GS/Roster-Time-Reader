@@ -39,5 +39,4 @@ poetry install
 Run Script
 
 ```python
-cd App/
 python main.py

@@ -1,13 +1,31 @@
+import os
+import sys
 import pandas as pd
 import sqlite3
+from openpyxl import load_workbook
 
+def get_resource(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+def get_sheet_names(file):
+	wb = load_workbook(file, read_only=True)
+	sheet_names = wb.sheetnames
+	wb.close()
+
+	return sheet_names
 
 # ==============================================================================
 # ATTENDENTS WEEK 1
 # ==============================================================================
 def attendant_one(selected):
 	file = '../Attendant_Carwash_Roster.xlsx'
-	file_sheets = pd.ExcelFile(file).sheet_names
+	file_sheets = get_sheet_names(file)
 
 	# Get Columns
 	columns = ['idx','ATTENDANTS', 'THURS', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
@@ -37,7 +55,7 @@ def attendant_one(selected):
 				week_one.append(x)
 
 	# CREATE DATABASE SQLITE WEEK 1
-	con = sqlite3.connect("_internal/database/time_sheet.db")
+	con = sqlite3.connect(get_resource("database/time_sheet.db"))
 	c = con.cursor()
 	# Create table
 	c.execute(
@@ -74,7 +92,7 @@ def attendant_one(selected):
 		x = (week[0], 0, week[1], week[2], week[3], week[4], week[5], week[6], week[7])
 		c.execute(week1, (x))
 
-		con.commit()
+	con.commit()
 
 	# UPDATE TABLE WITH DATES FROM ROSTER
 	query = """UPDATE rosterAttWeekOne SET
@@ -113,6 +131,7 @@ def attendant_one(selected):
 		if record[0] != 'Date':
 			week_one_data_db.append(r)
 
+	con.commit()
 	con.close()
 	
 	return week_one_data_db, weekone_dates
@@ -124,7 +143,7 @@ def attendant_one(selected):
 def attendant_two(selected):
 	# Get Dates
 	file = '../Attendant_Carwash_Roster.xlsx'
-	file_sheets = pd.ExcelFile(file).sheet_names
+	file_sheets = get_sheet_names(file)
 
 	# Get Columns
 	columns = ['idx','ATTENDANTS', 'THURS', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
@@ -153,7 +172,7 @@ def attendant_two(selected):
 				week_two.append(x)
 
 	# CREATE DATABASE SQLITE WEEK 2
-	con = sqlite3.connect("_internal/database/time_sheet.db")
+	con = sqlite3.connect(get_resource("database/time_sheet.db"))
 	c = con.cursor()
 	# Create table
 	c.execute(
@@ -190,10 +209,10 @@ def attendant_two(selected):
 		x = (week[0], 0, week[1], week[2], week[3], week[4], week[5], week[6], week[7])
 		c.execute(week2, (x))
 
-		con.commit()
+	con.commit()
 
 	# UPDATE TABLE WITH DATES FROM ROSTER
-	con = sqlite3.connect("_internal/database/time_sheet.db")
+	con = sqlite3.connect(get_resource("database/time_sheet.db"))
 	c = con.cursor()
 
 	query = """UPDATE rosterAttWeekTwo SET
@@ -232,6 +251,7 @@ def attendant_two(selected):
 		if record[0] != 'Date':
 			week_two_data_db.append(r)
 
+	con.commit()
 	con.close()
 
 	return week_two_data_db, weektwo_dates
