@@ -1,6 +1,3 @@
-/App/database
-/App/Total Time Worked.xlsx
-/virt
-/Attendant_Carwash_Roster.xlsx
-/CASHIERS_ROSTER.xlsx
-/App/__pycache__
+/database
+/Total Time Worked.xlsx
+/__pycache__
