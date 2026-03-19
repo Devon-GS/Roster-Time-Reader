@@ -96,6 +96,7 @@ def build_excel(roster, week_data, week_dates, week):
 	else:
 		ws[f'A{hd_row}'] = 'Week 2'
 
+	# Date display
 	ws[f'B{hd_row}'] = thursday
 	ws[f'C{hd_row}'] = friday
 	ws[f'D{hd_row}'] = saturday
@@ -104,7 +105,7 @@ def build_excel(roster, week_data, week_dates, week):
 	ws[f'G{hd_row}'] = tuesday
 	ws[f'H{hd_row}'] = wednesday
 
-	# ws[f'A{shd_row}'] = 'ATTENDENTS'
+	# Heading for days
 	ws[f'B{shd_row}'] = 'THURS'
 	ws[f'C{shd_row}'] = 'FRI'
 	ws[f'D{shd_row}'] = 'SAT'
@@ -120,14 +121,22 @@ def build_excel(roster, week_data, week_dates, week):
 		ws['M17'] = 'Name'
 		ws['N17'] = 'Total Hours'
 		ws['O17'] = 'Total Sun Hours'
-	else:
+		ws['P17'] = 'Total All Hours'
+	elif week == 1 and roster == 'Cashiers':
 		ws['M17'] = 'Name'
 		ws['N17'] = 'Total Hours'
 		ws['O17'] = 'Total Sun Hours'
+		ws['P17'] = 'Total All Hours'
 
+		# ws['M24'] = 'Name'
+		# ws['N24'] = 'Total Hours'
+		# ws['O24'] = 'Total Sun Hours'
+		# ws['P24'] = 'Total All Hours'
+	elif week == 1 and roster == 'Bakers':
 		ws['M24'] = 'Name'
 		ws['N24'] = 'Total Hours'
 		ws['O24'] = 'Total Sun Hours'
+		ws['P24'] = 'Total All Hours'
 
 	# Row and column start
 	if week == 1:
@@ -265,24 +274,26 @@ def build_excel(roster, week_data, week_dates, week):
 			we = (first(wed) - second(wed)) * -1
 			ws[f'H{row + i}'] = f'{wed} | ({int(we)})'
 
-		# Add total hours at end
+		# Add total hours at end for week 1
 		hours = th + fr + sa + mon_wo + mo + tu + we
 		ws[f'J{row + i}'] = f'{int(hours)}'
 
 		sun_hours = int(su) + int(sun_wo)
 		ws[f'K{row + i}'] = f'{int(sun_hours)}'
 
-		# Add total hours to dic
+		# Add total hours to dic for week 1 and 2
 		if week == 1:
 			total_hours[name] = [int(hours), int(sun_hours)]
 		else:
 			total_hours[name][0] += int(hours) 
 			total_hours[name][1] += int(sun_hours)
 
+		# Display total hours next to week 2 hours (total weekday, sunday, all total)
 		if week == 2:
 			ws[f'M{row + i}'] = name
 			ws[f'N{row + i}'] = total_hours[name][0]
 			ws[f'O{row + i}'] = total_hours[name][1]
+			ws[f'P{row + i}'] = total_hours[name][0] + total_hours[name][1]
 
 		i += 1 
 		

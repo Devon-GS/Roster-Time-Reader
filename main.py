@@ -112,6 +112,8 @@ def run_calculator():
 			f.format('Attendants')
 		if cashier != '':
 			f.format('Cashiers')
+		if baker != '':
+			f.format('Cashiers')
 
 		# Open total time excel
 		os.startfile(f'{get_resource("Total Time Worked.xlsx")}') 

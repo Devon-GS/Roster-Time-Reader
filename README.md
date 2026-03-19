@@ -11,6 +11,7 @@ Puts roster times and hours worked in to excel workbook.
 - 19 November 2025  [Patch004]  - Changed paths for Excel, Database and Icons for production 
 - 09 March 2026  	[Patch005]  - Fixed while app was running was unable to save excel workbook
 - 19 March 2026  	[Patch006]  - Fixed blank cell throws error
+- 19 March 2026  	[Patch007]  - Add total hours. Update formating of excel workbook
 
 <!-- ### <ins>Currently Working On:</ins>
 
