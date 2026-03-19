@@ -3,29 +3,15 @@ import sys
 import pandas as pd
 import sqlite3
 from openpyxl import load_workbook
+import resource_functions as rf
 
-def get_resource(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
-
-def get_sheet_names(file):
-	wb = load_workbook(file, read_only=True)
-	sheet_names = wb.sheetnames
-	wb.close()
-
-	return sheet_names
 
 # ==============================================================================
 # ATTENDENTS WEEK 1
 # ==============================================================================
 def attendant_one(selected):
 	file = '../Attendant_Carwash_Roster.xlsx'
-	file_sheets = get_sheet_names(file)
+	file_sheets = rf.get_sheet_names(file)
 
 	# Get Columns
 	columns = ['idx','ATTENDANTS', 'THURS', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
@@ -55,7 +41,7 @@ def attendant_one(selected):
 				week_one.append(x)
 
 	# CREATE DATABASE SQLITE WEEK 1
-	con = sqlite3.connect(get_resource("database/time_sheet.db"))
+	con = sqlite3.connect(rf.get_resource("database/time_sheet.db"))
 	c = con.cursor()
 	# Create table
 	c.execute(
@@ -143,7 +129,7 @@ def attendant_one(selected):
 def attendant_two(selected):
 	# Get Dates
 	file = '../Attendant_Carwash_Roster.xlsx'
-	file_sheets = get_sheet_names(file)
+	file_sheets = rf.get_sheet_names(file)
 
 	# Get Columns
 	columns = ['idx','ATTENDANTS', 'THURS', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
@@ -172,7 +158,7 @@ def attendant_two(selected):
 				week_two.append(x)
 
 	# CREATE DATABASE SQLITE WEEK 2
-	con = sqlite3.connect(get_resource("database/time_sheet.db"))
+	con = sqlite3.connect(rf.get_resource("database/time_sheet.db"))
 	c = con.cursor()
 	# Create table
 	c.execute(
@@ -212,7 +198,7 @@ def attendant_two(selected):
 	con.commit()
 
 	# UPDATE TABLE WITH DATES FROM ROSTER
-	con = sqlite3.connect(get_resource("database/time_sheet.db"))
+	con = sqlite3.connect(rf.get_resource("database/time_sheet.db"))
 	c = con.cursor()
 
 	query = """UPDATE rosterAttWeekTwo SET

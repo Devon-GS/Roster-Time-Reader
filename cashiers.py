@@ -3,25 +3,8 @@ import sys
 import pandas as pd
 import sqlite3
 from openpyxl import load_workbook
+import resource_functions as rf
 
-def get_resource(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        # In PyInstaller 6+ onedir mode, this points to the '_internal' folder automatically
-        base_path = sys._MEIPASS
-    except Exception:
-        # In development, use the current directory or the script's directory
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
-
-def get_sheet_names(file):
-	wb = load_workbook(file, read_only=True)
-	sheet_names = wb.sheetnames
-	wb.close()
-
-	return sheet_names
 
 # ==============================================================================
 # CASHIERS WEEK 1
@@ -30,7 +13,7 @@ def get_sheet_names(file):
 def cashier_one(selected):
 	# Get file
 	file = '../CASHIERS_ROSTER.xlsx'
-	file_sheets = get_sheet_names(file)
+	file_sheets = rf.get_sheet_names(file)
 
 	# Get Columns
 	columns = ['idx', 'CASHIERS', 'THU', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
@@ -61,7 +44,7 @@ def cashier_one(selected):
 				week_one.append(x)
 
 	# CREATE DATABASE SQLITE WEEK 1
-	con = sqlite3.connect(get_resource("database/time_sheet.db"))
+	con = sqlite3.connect(rf.get_resource("database/time_sheet.db"))
 	c = con.cursor()
 	# Create table
 	c.execute(
@@ -101,7 +84,7 @@ def cashier_one(selected):
 		con.commit()
 
 	# UPDATE TABLE WITH DATES FROM ROSTER
-	con = sqlite3.connect(get_resource("database/time_sheet.db"))
+	con = sqlite3.connect(rf.get_resource("database/time_sheet.db"))
 	c = con.cursor()
 
 	query = """UPDATE rosterCashierWeekOne SET
@@ -128,7 +111,7 @@ def cashier_one(selected):
 	con.commit()
 	
 	# GET ALL INFO FROM DATABASE FOR PROCESSING
-	con = sqlite3.connect(get_resource("database/time_sheet.db"))
+	con = sqlite3.connect(rf.get_resource("database/time_sheet.db"))
 	c = con.cursor()
 
 	c.execute("SELECT name FROM rosterCashierWeekOne")
@@ -154,7 +137,7 @@ def cashier_one(selected):
 def cashier_two(selected):
 	# Get file
 	file = '../CASHIERS_ROSTER.xlsx'
-	file_sheets = get_sheet_names(file)
+	file_sheets = rf.get_sheet_names(file)
 
 	# Get Columns
 	columns = ['idx', 'CASHIERS', 'THU', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED']
@@ -184,7 +167,7 @@ def cashier_two(selected):
 				week_two.append(x)
 
 	# CREATE DATABASE SQLITE WEEK 2
-	con = sqlite3.connect(get_resource("database/time_sheet.db"))
+	con = sqlite3.connect(rf.get_resource("database/time_sheet.db"))
 	c = con.cursor()
 	# Create table
 	c.execute(
@@ -224,7 +207,7 @@ def cashier_two(selected):
 		con.commit()
 
 	# UPDATE TABLE WITH DATES FROM ROSTER
-	con = sqlite3.connect(get_resource("database/time_sheet.db"))
+	con = sqlite3.connect(rf.get_resource("database/time_sheet.db"))
 	c = con.cursor()
 
 	query = """UPDATE rosterCashierWeekTwo SET
@@ -251,7 +234,7 @@ def cashier_two(selected):
 	con.commit()
 
 	# GET ALL INFO FROM DATABASE FOR PROCESSING
-	con = sqlite3.connect(get_resource("database/time_sheet.db"))
+	con = sqlite3.connect(rf.get_resource("database/time_sheet.db"))
 	c = con.cursor()
 
 	c.execute("SELECT name FROM rosterCashierWeekTwo")

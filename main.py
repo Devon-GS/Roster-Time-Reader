@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from PIL import ImageTk,Image
 from openpyxl import load_workbook
+import resource_functions as rf
 from os import path
 import os
 import sys
@@ -18,20 +19,8 @@ root = Tk()
 # ==============================================================================
 # FUNCTIONS
 # ==============================================================================
-def get_resource(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        # In PyInstaller 6+ onedir mode, this points to the '_internal' folder automatically
-        base_path = sys._MEIPASS
-    except Exception:
-        # In development, use the current directory or the script's directory
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
-
 def clean_database():
-	con = sqlite3.connect(get_resource('database/time_Sheet.db'))
+	con = sqlite3.connect(rf.get_resource('database/time_Sheet.db'))
 	c = con.cursor()
 
 	# Clear attendents
@@ -80,8 +69,8 @@ def run_calculator():
 		clean_database()
 
 		# Remove total time worked.xlsx
-		if os.path.exists(get_resource('Total Time Worked.xlsx')):
-			os.remove(get_resource('Total Time Worked.xlsx'))
+		if os.path.exists(rf.get_resource('Total Time Worked.xlsx')):
+			os.remove(rf.get_resource('Total Time Worked.xlsx'))
 
 		# Build attendants Week 1 and Week 2
 		if attendant != '':
@@ -116,7 +105,7 @@ def run_calculator():
 			f.format('Cashiers')
 
 		# Open total time excel
-		os.startfile(f'{get_resource("Total Time Worked.xlsx")}') 
+		os.startfile(f'{rf.get_resource("Total Time Worked.xlsx")}') 
 	except PermissionError:
 		messagebox.showerror(title='ERROR', message="Please close 'Total Time Worked.xlsx' and try again!")
 	except Exception as error:
@@ -149,7 +138,7 @@ else:
 		file_c = '../CASHIERS_ROSTER.xlsx'
 		file_sheets_c = get_sheet_names(file_c)
 
-		db_dir = path.exists(get_resource('database/time_Sheet.db'))
+		db_dir = path.exists(rf.get_resource('database/time_Sheet.db'))
 		if db_dir == False:
 			os.mkdir('database')
 
@@ -181,7 +170,7 @@ else:
 
 # Window layout
 root.title('Calculate Roster Time')
-root.iconbitmap(get_resource('icons/time.ico'))
+root.iconbitmap(rf.get_resource('icons/time.ico'))
 # root.columnconfigure(0, minsize=200)
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()

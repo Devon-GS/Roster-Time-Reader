@@ -1,43 +1,80 @@
-# Roster-Time-Reader
+# Roster-Time-Reader 🕒📊
 
-Calculates fortnight working hours of employees based on company's specific roster. 
-Puts roster times and hours worked in to excel workbook.
+A Python-based automation tool designed to calculate fortnightly working hours based on custom company roster logic. It streamlines payroll preparation by calculating hours and exporting formatted data directly into Excel workbooks.
 
-### <ins>Fixed Issues:</ins>
+[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
+[![Dependency Manager](https://img.shields.io/badge/dependency-poetry-purple)](https://python-poetry.org/)
 
-- 08 March 2024     [Patch001]  - Fixed issues with hour calculation
-- 05 November 2025  [Patch002]  - Add error handling 
-- 11 November 2025  [Patch003]  - Add formating of the excel sheet [Rewrite finished] 
-- 19 November 2025  [Patch004]  - Changed paths for Excel, Database and Icons for production 
-- 09 March 2026  	[Patch005]  - Fixed while app was running was unable to save excel workbook
-- 19 March 2026  	[Patch006]  - Fixed blank cell throws error
-- 19 March 2026  	[Patch007]  - Add total hours. Update formating of excel workbook
+---
 
-<!-- ### <ins>Currently Working On:</ins>
+## ✨ Key Features
 
-- N/A -->
+- **Automated Calculations:** Automatically determines fortnightly hours worked based on specific roster rules.
+- **Excel Integration:** Generates and updates Excel workbooks with roster times and calculated totals.
+- **Professional Formatting:** Auto-formats Excel sheets for readability, including headers, bold totals, and cell alignment.
+- **Error Handling:** Robust validation to handle blank cells and data inconsistencies without crashing.
+- **Production Ready:** Optimized paths for databases, icons, and external assets.
 
-### <ins>Installing and Running Program:</ins>
+---
 
-Install environment
+## 🚀 Getting Started
 
-```python
-python -m venv <name>
-```
+### Prerequisites
 
-Install poetry
+- Python 3.10 or higher
+- [Poetry](https://python-poetry.org/docs/#installation) (Dependency Manager)
 
-```python
-pip install poetry
-``` 
+### Installation
 
-Install dependencies
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/Roster-Time-Reader.git
+   cd Roster-Time-Reader
 
-```python
-poetry install
-```
+2. **Set up the virtual environment:**
+    ```bash
+    python -m venv venv
+    ```
+3. **Install Poetry and dependencies:**
+    ```bash
+    pip install poetry
+    poetry install
+    ```
+4. **Running the Application:**
+    ```bash
+    python main.py
+    ```
+## 📜 Changelog
 
-Run Script
+All notable changes and bug fixes are documented below.
 
-```python
-python main.py
+### [Patch 008] — 2026-03-19
+- **Cleaned:** Conducted major code refactor and optimization.
+- **Fixed:** Resolved issue where blank cells threw errors during calculation.
+- **Added:** New functionality to calculate and append **Total Hours**.
+- **Changed:** Enhanced Excel workbook formatting for better visual clarity.
+
+### [Patch 005] — 2026-03-09
+- **Fixed:** Resolved a bug preventing the Excel workbook from saving while the application was active.
+
+### [Patch 004] — 2025-11-19
+- **Changed:** Configured production-ready paths for Excel files, databases, and application icons.
+
+### [Patch 003] — 2025-11-11
+- **Added:** Automated Excel sheet formatting.
+- **Changed:** Completed full rewrite of the core logic.
+
+### [Patch 002] — 2025-11-05
+- **Added:** Implemented global error handling and data validation.
+
+### [Patch 001] — 2024-03-08
+- **Fixed:** Corrected logic errors in the hour calculation algorithm.
+
+---
+
+## 🛠️ Technical Details
+
+- **Language:** Python
+- **Environment Management:** Poetry
+- **Output Format:** `.xlsx` (Microsoft Excel)
+- **Data Handling:** Integrated database support for roster configurations.

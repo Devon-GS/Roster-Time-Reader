@@ -1,21 +1,11 @@
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from tkinter import messagebox
+import resource_functions as rf
 import sys
 import os
 import re
 
-def get_resource(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        # In PyInstaller 6+ onedir mode, this points to the '_internal' folder automatically
-        base_path = sys._MEIPASS
-    except Exception:
-        # In development, use the current directory or the script's directory
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
 
 # ==============================================================================
 # Build Excel
@@ -39,11 +29,11 @@ def build_excel(roster, week_data, week_dates, week):
 		return second
 		
 	# Check if Total time excel exists
-	if not os.path.exists(get_resource('Total Time Worked.xlsx')):
+	if not os.path.exists(rf.get_resource('Total Time Worked.xlsx')):
 		wb = Workbook()
 		wb.active.title = "Attendants"
 		wb.create_sheet("Cashiers")
-		wb.save(get_resource('Total Time Worked.xlsx'))
+		wb.save(rf.get_resource('Total Time Worked.xlsx'))
 		wb.close()
 
 	# ##############################################
@@ -51,7 +41,7 @@ def build_excel(roster, week_data, week_dates, week):
 	# ##############################################
 
 	# Start workbook or continue
-	wb = load_workbook(get_resource("Total Time Worked.xlsx"))
+	wb = load_workbook(rf.get_resource("Total Time Worked.xlsx"))
 	if roster == 'Bakers':
 		ws = wb['Cashiers']
 	else:
@@ -298,5 +288,5 @@ def build_excel(roster, week_data, week_dates, week):
 		i += 1 
 		
 	# Close workbook
-	wb.save(get_resource("Total Time Worked.xlsx"))
+	wb.save(rf.get_resource("Total Time Worked.xlsx"))
 	wb.close()

@@ -3,18 +3,8 @@ import sys
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Alignment, NamedStyle, Font, Border, Side
+import resource_functions as rf
 
-def get_resource(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        # In PyInstaller 6+ onedir mode, this points to the '_internal' folder automatically
-        base_path = sys._MEIPASS
-    except Exception:
-        # In development, use the current directory or the script's directory
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
 
 # Column letters and widths
 columns_size = {'A':11.75, 'All':10.25, 'J':6.25, 'K':9.89, 'M':11.25, 'N':11.04, 'O':14.89, 'P':13.20}
@@ -23,7 +13,7 @@ def format(sheet):
 	total_format = NamedStyle(name="total_format")
 	total_format.font = Font(bold=True)
 
-	wb = load_workbook(get_resource('Total Time Worked.xlsx'))
+	wb = load_workbook(rf.get_resource('Total Time Worked.xlsx'))
 	ws = wb[sheet]
 
 	# Register name style
@@ -112,5 +102,5 @@ def format(sheet):
 		for cell in ws['M']:
 			cell.alignment = Alignment(horizontal='left')
 
-	wb.save(get_resource('Total Time Worked.xlsx'))
+	wb.save(rf.get_resource('Total Time Worked.xlsx'))
 	wb.close()
