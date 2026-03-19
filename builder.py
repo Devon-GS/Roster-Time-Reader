@@ -1,5 +1,6 @@
 from openpyxl import Workbook
 from openpyxl import load_workbook
+from tkinter import messagebox
 import sys
 import os
 import re
@@ -27,13 +28,16 @@ def build_excel(roster, week_data, week_dates, week):
 	# FUNCTIONS
 	# Find numbers before dash and after dash
 	def first(weekday):
-		first = float(re.findall('[0-9]+(?=.*\-)', weekday)[0])
-		return first
-
+		try:
+			first = float(re.findall('[0-9]+(?=.*\-)', weekday)[0])
+			return first
+		except Exception:
+			messagebox.showerror(title='ERROR', message="Time time cells are blank or foreign data in cells!")
+		
 	def second(weekday):
 		second = float(re.findall('\-(.*)', weekday)[0])
 		return second
-	
+		
 	# Check if Total time excel exists
 	if not os.path.exists(get_resource('Total Time Worked.xlsx')):
 		wb = Workbook()
